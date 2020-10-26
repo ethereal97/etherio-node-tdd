@@ -4,10 +4,7 @@
   "description": "",
   "main": "app.test.js",
   "scripts": {
-    "test": "env NODE_ENV=development nodemon app.test",
-    "dev": "env NODE_ENV=development nodemon",
-    "server": "node app.test",
-    "start": "env NODE_ENV=production npm run server"
+    "test": "nodemon"
   },
   "keywords": [],
   "author": "",
@@ -16,7 +13,7 @@
     "nodemon": "^2.0.6"
   },
   "nodemonConfig": {
-    "exec": "clear && npm run server",
+    "exec": "clear && node app.test",
     "ignore": "tests/views/**"
   }
 }

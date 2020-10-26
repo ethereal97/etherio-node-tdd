@@ -61,7 +61,7 @@ if (test instanceof Error) {
     ).map(
         s => /\((.+):(\d+):(\d+)\)/.exec(s.trim()).slice(1)
     );
-
+    console.log(os.EOL);
     console.log("\033[1;41;37m FAILED \033[0m", __filename, os.EOL);
     console.log("\033[1;33m[" + test.name + "] \033[0;4;1;37m" + test.message + "\033[0m");
     console.log(" \033[2;37mStacks\033[0m");
@@ -80,8 +80,8 @@ if (test instanceof Error) {
             console.log(os.EOL, dbg.join(os.EOL));
         }
     }
-    console.log(os.EOL);
 } else {
+    console.log(os.EOL);
     console.log("\033[1;42;30m SUCCESS \033[0m", __filename, os.EOL);
     if (typeof test === "object") {
         Object.entries(test).forEach(([name, value]) => {
@@ -93,6 +93,7 @@ if (test instanceof Error) {
         });
     }
 }
+console.log(os.EOL);
 
 console.log(debug.format
     .replace('{{loadtime}}', (debug.loadtime / 1000).toFixed(2))
