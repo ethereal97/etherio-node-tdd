@@ -50,7 +50,6 @@ const test = (() => {
     debug.done();
     return testResult;
 })();
-
 if (test instanceof Error) {
     let {
         stack
@@ -61,7 +60,6 @@ if (test instanceof Error) {
     ).map(
         s => /\((.+):(\d+):(\d+)\)/.exec(s.trim()).slice(1)
     );
-    console.log(os.EOL);
     console.log("\033[1;41;37m FAILED \033[0m", __filename, os.EOL);
     console.log("\033[1;33m[" + test.name + "] \033[0;4;1;37m" + test.message + "\033[0m");
     console.log(" \033[2;37mStacks\033[0m");
@@ -71,17 +69,26 @@ if (test instanceof Error) {
             let c = require('fs').readFileSync(file).toString();
             c = c.split("\n");
             let r = [];
-            for (let i = line - 3; i < line + 3; i++) {
+            for (let i = Number(line) - 2; i < Number(line) + 3; i++) {
                 if (i > 0 && i < c.length) {
-                    dbg.push(i == line ? "\033[41;37m>> " + i + ' | ' + c[i - 1] + "\033[0m" : '   ' + i + ' | ' + c[i - 1]);
+                    let z = c[i - 1];
+                    if (i == Number(line)) {
+                        let a = z.slice(0, col - 1);
+                        let b = z.slice(col);
+                        z = [a, "\033[4m", z[col - 1], b].join('');
+                        z = "\033[2;41;37m>> " + i + " |\033[0;1;41;37m " + z + "\033[0m";
+                    } else {
+                        z = "   \033[2m" + i + " |\033[0m " + z;
+                    }
+                    dbg.push(z);
                 }
             }
             dbg.push(r.join(os.EOL));
-            console.log(os.EOL, dbg.join(os.EOL));
+            console.log(dbg.join(os.EOL), os.EOL);
         }
     }
-} else {
     console.log(os.EOL);
+} else {
     console.log("\033[1;42;30m SUCCESS \033[0m", __filename, os.EOL);
     if (typeof test === "object") {
         Object.entries(test).forEach(([name, value]) => {
@@ -93,10 +100,9 @@ if (test instanceof Error) {
         });
     }
 }
-console.log(os.EOL);
-
 console.log(debug.format
     .replace('{{loadtime}}', (debug.loadtime / 1000).toFixed(2))
     .replace('{{user}}', (debug.usage.user / 1000).toFixed(2))
-    .replace('{{total}}', (debug.usage.total / 1000).toFixed(2))
+    .replace('{{total}}', (debug.usage.total / 1000).toFixed(2)),
+    os.EOL
 );

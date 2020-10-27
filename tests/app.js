@@ -1,11 +1,23 @@
-const fs = require('fs');
-
-const config = require('./config');
+const {
+    join
+} = require('path');
+const BladeEngine = require('./BladeEngine');
 const View = require('./src/View');
 
-const view = new View(config);
+const view = new View({
+    root: join(__dirname, 'views'),
+});
 
-module.exports = {
-    config,
-    view
-}
+view.use(BladeEngine);
+
+let response = view.render('welcome', {
+    name: 'Blade Template'
+}).with({
+    isLogged: false,
+});
+
+let tokens = response.parse();
+
+let responseText = response.toString();
+
+module.exports = {}
